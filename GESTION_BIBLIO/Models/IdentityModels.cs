@@ -1,34 +1,39 @@
-﻿using System.Data.Entity;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace GESTION_BIBLIO.Models
-    //test test
 {
-    // Vous pouvez ajouter des données de profil pour l'utilisateur en ajoutant d'autres propriétés à votre classe ApplicationUser. Pour en savoir plus, consultez https://go.microsoft.com/fwlink/?LinkID=317594.
+
+
     public class ApplicationUser : IdentityUser
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
-        {
-            // Notez que l'authenticationType doit correspondre à celui défini dans CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-            // Ajouter des revendications utilisateur personnalisées ici
-            return userIdentity;
-        }
-    }
+        [Required]
+        [StringLength(100)]
+        public string FullName { get; set; }
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
-    {
-        public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
-        {
-        }
+        [Required]
+        [StringLength(20)]
+        public string Role { get; set; }
+        // Student | Admin | Librarian
 
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        [Required]
+        [StringLength(20)]
+        public string CIN { get; set; }   
+
+        [DataType(DataType.Date)]
+        public DateTime DateOfBirth { get; set; }
+
+        [StringLength(150)]
+        public string Address { get; set; }
+
+        [Required]
+        public DateTime RegistrationDate { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
